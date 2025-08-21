@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rock Paper Scissors</title>
+ 
+</head>
+<link rel="stylesheet" href="styles.css">
+<body>
+  <div class="banner">
+    <img src="pngtree-hand-draw-gesture-of-rock-paper-scissors-png-image_2728575.jpg" alt="Game Banner">
+  </div>
+  <div class="images">
+    <img id="player-img" src="" alt="Player choice" style="display:none;"/>
+    <img id="computer-img" src="" alt="Computer choice" style="display:none;"/>
+  </div>
+  <div class="game-container">
+    <h1>Rock Paper Scissors</h1>
+    <div class="choices">
+      <button onclick="play('rock')">Rock</button>
+      <button onclick="play('paper')">Paper</button>
+      <button onclick="play('scissors')">Scissors</button>
+    </div>
+
+    <div class="versus">Renard vs Computer</div>
+    <div class="result-section">
+      <div id="player-choice">You chose: </div>
+      <div class="divider"></div>
+      <div id="computer-choice">Computer chose: </div>
+    </div>
+
+    <div class="result" id="result"></div>
+    <div class="score" id="score">Player: 0 | Computer: 0</div>
+    <button id="reset" onclick="resetGame()">Reset Game</button>
+  </div>
+
+  <script>
+    let playerScore = 0;
+    let computerScore = 0;
+    let gameOver = false;
+
+    const images = {
+      rock: 'rock.png',
+      paper: 'Paper.png',
+      scissors: 'Scissors.png'
+    };
+
+    function play(playerChoice) {
+      if (gameOver) return;
+
+      const choices = ['rock', 'paper', 'scissors'];
+      const computerChoice = choices[Math.floor(Math.random() * 3)];
+
+      document.getElementById('player-img').src = images[playerChoice];
+      document.getElementById('player-img').style.display = 'block';
+
+      document.getElementById('computer-img').src = images[computerChoice];
+      document.getElementById('computer-img').style.display = 'block';
+
+      document.getElementById('player-choice').innerText = `You chose: ${playerChoice}`;
+      document.getElementById('computer-choice').innerText = `Computer chose: ${computerChoice}`;
+
+      let resultText = "";
+      if (playerChoice === computerChoice) {
+        resultText = "It's a tie!";
+      } else if (
+        (playerChoice === 'rock' && computerChoice === 'scissors') ||
+        (playerChoice === 'paper' && computerChoice === 'rock') ||
+        (playerChoice === 'scissors' && computerChoice === 'paper')
+      ) {
+        playerScore++;
+        resultText = "You win this round!";
+      } else {
+        computerScore++;
+        resultText = "You lose this round!";
+      }
+
+      document.getElementById('result').innerText = resultText;
+      document.getElementById('score').innerText = `Player: ${playerScore} | Computer: ${computerScore}`;
+
+      if (playerScore === 2 || computerScore === 2) {
+        gameOver = true;
+        document.getElementById('result').innerText += playerScore === 2
+          ? "\n🎉 You won the best of 3!"
+          : "\n💻 Computer won the best of 3!";
+      }
+    }
+
+    function resetGame() {
+      playerScore = 0;
+      computerScore = 0;
+      gameOver = false;
+      document.getElementById('result').innerText = '';
+      document.getElementById('score').innerText = 'Player: 0 | Computer: 0';
+      document.getElementById('player-img').style.display = 'none';
+      document.getElementById('computer-img').style.display = 'none';
+      document.getElementById('player-choice').innerText = 'You chose: ';
+      document.getElementById('computer-choice').innerText = 'Computer chose: ';
+    }
+  </script>
+</body>
+</html>
